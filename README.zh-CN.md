@@ -8,7 +8,7 @@
 
 社区插件目录上架前，可手动安装：
 
-1. 从 Releases 下载 `pdf-selection-translator-0.1.1.zip`。
+1. 从 Releases 下载 `pdf-selection-translator-0.1.2.zip`。
 2. 解压到知识库的 `.obsidian/plugins/`，得到 `pdf-selection-translator` 文件夹。若修改过 Obsidian 配置目录名称，请使用实际配置目录。
 3. 确认该文件夹内直接包含 `main.js`、`manifest.json`、`styles.css`。
 4. 重启 Obsidian，在第三方插件中启用 **PDF Selection Translator**。

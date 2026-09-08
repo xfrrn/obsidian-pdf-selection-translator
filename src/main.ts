@@ -167,7 +167,7 @@ class SettingsForm {
           settings.triggerMode = value as TriggerMode; await plugin.saveSettings();
         }));
     new Setting(container).setName('选词等待时间').setDesc('稍等片刻再发送，减少连续调整选区产生的调用。单位：毫秒。')
-      .addSlider((slider) => slider.setLimits(150, 1500, 50).setValue(settings.delayMs).setDynamicTooltip().onChange(async (value) => {
+      .addSlider((slider) => slider.setLimits(150, 1500, 50).setValue(settings.delayMs).onChange(async (value) => {
         settings.delayMs = value; await plugin.saveSettings();
       }));
     new Setting(container).setName('结合附近文字翻译').setDesc('附带选区前后各最多 350 字符帮助术语消歧；不会上传整篇 PDF。')

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- Expose the built bundle at `dist/main.js` so the Obsidian community directory can verify it against the published asset.
+- Scope selection debounce timers to their PDF window and use explicit Node timers for network requests.
+- Validate model response shapes before accessing their fields.
+- Remove a deprecated slider tooltip call.
+
 ## 0.1.1
 
 First public release.

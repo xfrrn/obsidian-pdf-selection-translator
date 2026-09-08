@@ -1,5 +1,6 @@
 import { request as httpRequest } from 'node:http';
 import { request as httpsRequest } from 'node:https';
+import { setTimeout as setNodeTimeout, clearTimeout as clearNodeTimeout } from 'node:timers';
 import { abortError, type Transport } from './core';
 
 /** Desktop Node transport: no browser CORS, abortable, no cross-host redirects. */
@@ -8,11 +9,11 @@ export const desktopTransport: Transport = (input, signal) => new Promise((resol
   const url = new URL(input.url);
   const send = url.protocol === 'https:' ? httpsRequest : httpRequest;
   let settled = false;
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timer: ReturnType<typeof setNodeTimeout> | undefined;
   const finish = (error?: Error, response?: { status: number; text: string }) => {
     if (settled) return;
     settled = true;
-    clearTimeout(timer);
+    clearNodeTimeout(timer);
     signal.removeEventListener('abort', cancel);
     if (error) reject(error); else resolve(response!);
   };
@@ -45,7 +46,7 @@ export const desktopTransport: Transport = (input, signal) => new Promise((resol
     finish(new Error(message));
   });
   signal.addEventListener('abort', cancel, { once: true });
-  timer = setTimeout(() => {
+  timer = setNodeTimeout(() => {
     finish(new Error(`请求超过 ${Math.round(input.timeoutMs / 1000)} 秒，已停止等待；可以缩小选区或增加超时。`));
     request.destroy();
   }, input.timeoutMs);

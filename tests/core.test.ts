@@ -65,6 +65,9 @@ test('successful text and text-array responses parse; malformed and truncated ou
   for (const response of [
     { status: 200, text: '<html>oops</html>' },
     { status: 200, text: '{}' },
+    { status: 200, text: 'null' },
+    { status: 200, text: '{"choices":[null]}' },
+    { status: 200, text: '{"choices":[{"message":{"content":[null,42,{"type":"text","text":3}]}}]}' },
     { status: 200, text: JSON.stringify({ choices: [{ message: { content: '一半' }, finish_reason: 'length' }] }) },
   ]) assert.throws(() => parseResponse(response));
 });

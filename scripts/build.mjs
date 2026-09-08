@@ -15,6 +15,8 @@ await build({
   banner: { js: `/* PDF Selection Translator ${manifest.version} | Copyright 2026 xfrrn | MIT */` },
   logLevel: 'info',
 });
+// The community directory verifies dist/main.js against the release attachment.
+await copyFile('dist/pdf-selection-translator/main.js', 'dist/main.js');
 for (const file of ['manifest.json', 'styles.css']) {
   await copyFile(file, `dist/pdf-selection-translator/${file}`);
 }

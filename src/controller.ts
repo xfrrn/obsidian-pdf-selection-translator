@@ -7,7 +7,7 @@ export class SelectionController {
   private selection: PdfSelection | null = null;
   private popover: TranslationPopover | null = null;
   private request: AbortController | null = null;
-  private timer: ReturnType<typeof setTimeout> | undefined;
+  private timer: number | undefined;
   private cleanup: Array<() => void> = [];
   private pointerDown = false;
   private disposed = false;
@@ -70,7 +70,7 @@ export class SelectionController {
     if (!selected) {
       // Opening the command palette/settings steals browser selection. Keep a live
       // snapshot for the command, but never schedule another request from it.
-      clearTimeout(this.timer);
+      this.doc.defaultView?.clearTimeout(this.timer);
       return;
     }
     if (sameSelection(this.selection, selected)) return;
@@ -78,7 +78,7 @@ export class SelectionController {
     this.selection = selected;
     const settings = this.getSettings();
     if (settings.triggerMode === 'command') return;
-    this.timer = setTimeout(() => {
+    this.timer = this.doc.defaultView!.setTimeout(() => {
       if (this.disposed || this.selection !== selected || !selectionIsAlive(selected)) return;
       const current = readPdfSelection(this.doc);
       if (!current || !sameSelection(selected, current)) return;
@@ -95,7 +95,7 @@ export class SelectionController {
       this.notice('请先在 PDF 中双击单词或拖选一段文字。扫描版 PDF 需要先有 OCR 文字层。');
       return;
     }
-    clearTimeout(this.timer);
+    this.doc.defaultView?.clearTimeout(this.timer);
     this.show();
     void this.translate();
   }
@@ -133,7 +133,7 @@ export class SelectionController {
   }
 
   close(): void {
-    clearTimeout(this.timer);
+    this.doc.defaultView?.clearTimeout(this.timer);
     ++this.revision;
     this.request?.abort();
     this.request = null;

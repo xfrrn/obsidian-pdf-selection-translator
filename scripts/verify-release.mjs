@@ -14,6 +14,7 @@ const files = (await readdir('dist/pdf-selection-translator')).sort();
 assert.deepEqual(files, ['main.js', 'manifest.json', 'styles.css']);
 assert.deepEqual(await json('dist/pdf-selection-translator/manifest.json'), manifest);
 const bundle = await readFile('dist/pdf-selection-translator/main.js', 'utf8');
+assert.equal(await readFile('dist/main.js', 'utf8'), bundle);
 assert.ok(bundle.includes('MIT'));
 assert.ok(!bundle.includes('local-ui-test'));
 assert.ok(!bundle.includes('Mock request accepted'));

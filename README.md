@@ -29,7 +29,7 @@ The plugin is free and MIT licensed. A hosted model provider typically requires 
 
 Until the plugin is approved for the community directory, install it manually:
 
-1. Download `pdf-selection-translator-0.1.1.zip` from [Releases](https://github.com/xfrrn/obsidian-pdf-selection-translator/releases/latest).
+1. Download `pdf-selection-translator-0.1.2.zip` from [Releases](https://github.com/xfrrn/obsidian-pdf-selection-translator/releases/latest).
 2. Extract the `pdf-selection-translator` folder into `<vault>/<config-dir>/plugins/`. The default config directory is `.obsidian`.
 3. The plugin folder must directly contain `main.js`, `manifest.json` and `styles.css`.
 4. Restart Obsidian and enable **PDF Selection Translator** under **Settings → Community plugins**.
@@ -103,7 +103,7 @@ npm run check
 
 The check runs TypeScript validation, the test suite, a production build and release-asset validation. Installable files are written to `dist/pdf-selection-translator/`. Tests use synthetic text and local mock servers; no paid model key is needed.
 
-Release tags must exactly match `manifest.json`, for example `0.1.1` without a `v` prefix. Attach `main.js`, `manifest.json` and `styles.css` individually, even when also providing a ZIP. Update `package.json` and `versions.json` with the release version.
+Release tags must exactly match `manifest.json`, for example `0.1.2` without a `v` prefix. Attach `main.js`, `manifest.json` and `styles.css` individually, even when also providing a ZIP. Update `package.json` and `versions.json` with the release version.
 
 ## License and attribution
 

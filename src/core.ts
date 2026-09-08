@@ -124,6 +124,10 @@ export function buildRequest(settings: Settings, input: TranslationInput): HttpR
   };
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
 export function parseResponse(response: HttpResponse): string {
   // Do not surface an untrusted provider error body: it can echo credentials or paper text.
   const messages: Record<number, string> = {
@@ -137,14 +141,18 @@ export function parseResponse(response: HttpResponse): string {
   if (response.status < 200 || response.status >= 300) {
     throw new Error(`HTTP ${response.status}：${messages[response.status] ?? (response.status >= 500 ? '服务商暂时不可用，请稍后重试。' : '请求未成功，请检查接口配置。')}`);
   }
-  let data;
+  let data: unknown;
   try { data = JSON.parse(response.text); } catch { throw new Error('接口返回的不是 JSON，请检查地址是否指向 API。'); }
-  const choice = data?.choices?.[0];
-  const content = choice?.message?.content;
-  const text = typeof content === 'string' ? content : Array.isArray(content)
-    ? content.filter((part) => part?.type === 'text' && typeof part.text === 'string').map((part) => part.text).join('\n') : '';
+  const choices: unknown[] = isRecord(data) && Array.isArray(data.choices) ? data.choices : [];
+  const choice = isRecord(choices[0]) ? choices[0] : undefined;
+  const message = isRecord(choice?.message) ? choice.message : undefined;
+  const content = message?.content;
+  const parts: unknown[] = Array.isArray(content) ? content : [];
+  const text = typeof content === 'string' ? content : parts
+    .filter((part): part is Record<string, unknown> & { text: string } => isRecord(part) && part.type === 'text' && typeof part.text === 'string')
+    .map((part) => part.text).join('\n');
   if (!text.trim()) throw new Error('模型没有返回译文；请确认支持 Chat Completions，或更换模型。');
-  if (choice.finish_reason === 'length') throw new Error('译文被服务商截断，请缩小选区或调整服务商的输出限制。');
+  if (choice?.finish_reason === 'length') throw new Error('译文被服务商截断，请缩小选区或调整服务商的输出限制。');
   return text.trim();
 }
 

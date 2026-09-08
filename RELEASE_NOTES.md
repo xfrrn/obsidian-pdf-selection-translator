@@ -1,20 +1,18 @@
-# PDF Selection Translator 0.1.1
+# PDF Selection Translator 0.1.2
 
-First public release: translate selected PDF words and passages in a popover while reading in Obsidian and PDF++.
+This update addresses feedback from the Obsidian Community directory review.
 
-- Bring your own OpenAI-compatible Chat Completions endpoint, model and API key.
-- Automatic, click-to-translate and command-only modes.
-- Optional nearby context, copy translation, in-memory cache and cancellation of superseded requests.
-- Keep PDF++ context menus usable by dismissing the translation popover before they open.
+- Make the build output discoverable for source-to-release verification.
+- Use each PDF window's own selection timer, and explicit Node timers for HTTP requests.
+- Validate provider response structures before reading translation fields.
+- Remove a deprecated slider tooltip call.
 
-Requires Obsidian desktop 1.13.7 or later and a selectable PDF text layer. The interface is in Simplified Chinese; the target translation language is configurable. Hosted model usage may require a paid provider account. API keys are session-only unless plaintext persistence is explicitly enabled.
+Download `pdf-selection-translator-0.1.2.zip`, extract its plugin folder into your vault's plugin directory, and enable PDF Selection Translator. Obsidian desktop 1.13.7+ and a PDF with selectable text are required. The interface is in Simplified Chinese; the target language and OpenAI-compatible model are configurable.
 
-For manual installation, extract `pdf-selection-translator-0.1.1.zip` into your vault's configuration `plugins` directory and enable **PDF Selection Translator**. The three individual assets are also attached for Obsidian-compatible installers.
+The plugin is free and MIT licensed. Hosted model services may require an API account and paid usage. API keys are session-only by default; optional persistence stores them in plain text. See the README for network and privacy details.
 
-Validation: 24 automated tests, TypeScript checking and release-asset validation. Core PDF++ UI behavior was tested on Windows with a loopback mock endpoint. Actual provider connectivity and translation quality depend on your chosen service.
+Validation: TypeScript, 24 automated tests, production build, and release-asset verification. The tests use local mock services and do not certify real-provider translation quality.
 
----
+## 中文
 
-首个公开版本：在 Obsidian / PDF++ 里选词后查看翻译浮窗。支持自定义大模型接口、自动 / 点击 / 快捷键翻译、上下文辅助、复制与缓存。
-
-需要桌面版 Obsidian 1.13.7+，PDF 必须有文字层。外部模型可能按量收费。安装、隐私和配置详情请查看仓库 README。
+根据 Obsidian 社区审核反馈，修复构建文件查找路径、独立窗口定时器和模型响应类型检查，并移除已弃用的滑块提示调用。下载 ZIP 后按 README 安装；升级时保留原有 data.json 配置文件。
