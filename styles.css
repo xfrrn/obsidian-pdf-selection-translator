@@ -1,0 +1,42 @@
+.pst-popover {
+  --pst-accent: var(--interactive-accent, #7967ce);
+  position: fixed;
+  z-index: 1000;
+  width: 400px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 18%);
+  font-family: var(--font-interface);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.pst-header { display: flex; align-items: center; gap: 8px; padding: 12px 14px 8px; flex-shrink: 0; }
+.pst-mark { color: var(--pst-accent); font-weight: 700; font-size: 16px; }
+.pst-title { font-weight: 600; }
+.pst-status { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.pst-popover button { box-shadow: none; font-size: 12px; height: auto; padding: 4px 9px; cursor: pointer; }
+.pst-popover button:focus-visible { outline: 2px solid var(--pst-accent); outline-offset: 2px; }
+.pst-popover .pst-icon-button { background: transparent; padding: 0 5px; font-size: 22px; color: var(--text-muted); }
+.pst-source { margin: 0 14px; padding: 8px 10px; background: var(--background-secondary); border-radius: 6px; color: var(--text-muted); font-size: 12px; overflow: auto; max-height: 100px; flex-shrink: 0; }
+.pst-source summary { cursor: pointer; overflow-wrap: anywhere; }
+.pst-source-text { white-space: pre-wrap; padding-top: 6px; user-select: text; }
+.pst-output { padding: 14px 16px; overflow: auto; min-height: 60px; max-height: min(45vh, 380px); white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+.pst-footer { border-top: 1px solid var(--background-modifier-border); padding: 9px 12px; display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.pst-settings { margin-left: auto; color: var(--text-muted); }
+.pst-error .pst-output { color: var(--text-error); }
+.pst-loading .pst-status { color: var(--pst-accent); }
+.pst-loading .pst-mark { animation: pst-pulse 1.2s ease-in-out infinite alternate; }
+.pst-statusbar { cursor: pointer; }
+.pst-settings-container .setting-item-control input[type="text"],
+.pst-settings-container .setting-item-control input[type="password"] { width: min(300px, 40vw); }
+.pst-settings-intro { color: var(--text-muted); line-height: 1.7; }
+.pst-test-result { white-space: pre-wrap; user-select: text; padding: 10px 0; }
+@keyframes pst-pulse { from { opacity: .4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .pst-loading .pst-mark { animation: none; } }
