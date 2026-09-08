@@ -27,7 +27,9 @@ The plugin is free and MIT licensed. A hosted model provider typically requires 
 
 ## Install
 
-Until the plugin is approved for the community directory, install it manually:
+Open the [community listing](https://community.obsidian.md/plugins/pdf-selection-translator) and choose **Add to Obsidian**, or search for **PDF Selection Translator** under **Settings → Community plugins → Browse**. GitHub may have a newer release while the directory reviews an update.
+
+For manual installation:
 
 1. Download `pdf-selection-translator-0.1.2.zip` from [Releases](https://github.com/xfrrn/obsidian-pdf-selection-translator/releases/latest).
 2. Extract the `pdf-selection-translator` folder into `<vault>/<config-dir>/plugins/`. The default config directory is `.obsidian`.

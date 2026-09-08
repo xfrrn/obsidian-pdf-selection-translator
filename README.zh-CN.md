@@ -6,7 +6,9 @@
 
 ## 安装与配置
 
-社区插件目录上架前，可手动安装：
+打开[社区插件页面](https://community.obsidian.md/plugins/pdf-selection-translator)，点击 **Add to Obsidian**；也可在 Obsidian 的“第三方插件 → 浏览”中搜索 **PDF Selection Translator**。新版本审核期间，社区目录版本可能暂时落后于 GitHub。
+
+手动安装最新 GitHub 版本：
 
 1. 从 Releases 下载 `pdf-selection-translator-0.1.2.zip`。
 2. 解压到知识库的 `.obsidian/plugins/`，得到 `pdf-selection-translator` 文件夹。若修改过 Obsidian 配置目录名称，请使用实际配置目录。
