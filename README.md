@@ -34,7 +34,7 @@ Open the [community listing](https://community.obsidian.md/plugins/pdf-selection
 
 For manual installation:
 
-1. Download `pdf-selection-translator-0.1.2.zip` from [Releases](https://github.com/xfrrn/obsidian-pdf-selection-translator/releases/latest).
+1. Download `pdf-selection-translator-0.2.1.zip` from [Releases](https://github.com/xfrrn/obsidian-pdf-selection-translator/releases/latest).
 2. Extract the `pdf-selection-translator` folder into `<vault>/<config-dir>/plugins/`. The default config directory is `.obsidian`.
 3. The plugin folder must directly contain `main.js`, `manifest.json` and `styles.css`.
 4. Restart Obsidian and enable **PDF Selection Translator** under **Settings → Community plugins**.
