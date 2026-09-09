@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+- Fetch model IDs from the configured service and select them from a dropdown, with manual entry retained.
+- Offer 16 target-language presets and preserve custom language values.
+- Switch settings between Simplified Chinese and English immediately, independently of the translation language.
+- Cancel model discovery when the endpoint or key changes, settings close, or the plugin unloads.
+- Add authenticated GET transport and settings interaction regression tests.
+
 ## 0.1.2
 
 - Expose the built bundle at `dist/main.js` so the Obsidian community directory can verify it against the published asset.

@@ -37,6 +37,9 @@
 .pst-settings-container .setting-item-control input[type="text"],
 .pst-settings-container .setting-item-control input[type="password"] { width: min(300px, 40vw); }
 .pst-settings-intro { color: var(--text-muted); line-height: 1.7; }
+.pst-settings-container .setting-item-control { flex-wrap: wrap; gap: 8px; }
+.pst-settings-container select { max-width: min(360px, 45vw); text-overflow: ellipsis; }
+.pst-test-result:empty { display: none; }
 .pst-test-result { white-space: pre-wrap; user-select: text; padding: 10px 0; }
 @keyframes pst-pulse { from { opacity: .4; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .pst-loading .pst-mark { animation: none; } }

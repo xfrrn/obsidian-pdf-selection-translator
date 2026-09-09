@@ -1,6 +1,7 @@
 export type TriggerMode = 'auto' | 'button' | 'command';
 
 export interface Settings {
+  uiLanguage: 'zh-CN' | 'en';
   baseUrl: string;
   model: string;
   apiKey: string;
@@ -14,6 +15,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+  uiLanguage: 'zh-CN',
   baseUrl: '',
   model: '',
   apiKey: '',
@@ -30,6 +32,7 @@ export function normalizeSettings(data: unknown): Settings {
   const result = { ...DEFAULT_SETTINGS };
   if (!data || typeof data !== 'object') return result;
   const source = data as Record<string, unknown>;
+  if (source.uiLanguage === 'en') result.uiLanguage = 'en';
   for (const key of ['baseUrl', 'model', 'targetLanguage', 'apiKey'] as const) {
     if (typeof source[key] === 'string') result[key] = source[key];
   }
@@ -76,6 +79,7 @@ export function completionUrl(input: string): string {
 
 export interface TranslationInput { text: string; context: string }
 export interface HttpRequest {
+  method?: 'GET' | 'POST';
   url: string;
   headers: Record<string, string>;
   body: string;

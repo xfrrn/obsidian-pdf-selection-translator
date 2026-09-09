@@ -18,8 +18,8 @@ export const desktopTransport: Transport = (input, signal) => new Promise((resol
     if (error) reject(error); else resolve(response!);
   };
   const request = send(url, {
-    method: 'POST',
-    headers: { ...input.headers, 'Content-Length': Buffer.byteLength(input.body) },
+    method: input.method ?? 'POST',
+    headers: { ...input.headers, ...(input.method === 'GET' ? {} : { 'Content-Length': Buffer.byteLength(input.body) }) },
   }, (response) => {
     const chunks: Buffer[] = [];
     let length = 0;
@@ -51,5 +51,5 @@ export const desktopTransport: Transport = (input, signal) => new Promise((resol
     request.destroy();
   }, input.timeoutMs);
   if (signal.aborted) cancel();
-  else request.end(input.body);
+  else request.end(input.method === 'GET' ? undefined : input.body);
 });

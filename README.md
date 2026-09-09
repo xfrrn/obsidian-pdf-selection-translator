@@ -10,12 +10,15 @@ Translate selected words and passages while reading PDFs in Obsidian. Bring your
 - Automatic, click-to-translate and command-only modes.
 - A popover near the selection with expandable source text and a copy button.
 - Configurable endpoint, model, target language, selection limit, delay and timeout.
+- Fetch model IDs from your endpoint and select from a dropdown, with manual entry as a fallback.
+- Choose from 16 target-language presets or keep a custom language.
+- Switch the settings interface between Simplified Chinese and English instantly.
 - Optional nearby context for terminology disambiguation.
 - In-memory cache for the last 100 successful translations.
 - Cancel superseded requests; dismiss the popover before PDF++ opens a context menu.
 - No automatic changes to your PDFs or notes.
 
-The current interface is in Simplified Chinese. The target translation language is configurable and defaults to Simplified Chinese.
+The settings interface supports Simplified Chinese and English. The reading popover remains in Simplified Chinese. Target translation language is independent of the settings interface language and defaults to Simplified Chinese.
 
 ## Requirements
 
@@ -50,6 +53,10 @@ Open the plugin settings or run **PDF Selection Translator: 打开翻译设置**
 | 目标语言 | Target language, such as `简体中文` or `English`. |
 
 Click **测试翻译** to send a fixed example sentence. This is a real model call and may incur provider charges.
+
+In version 0.2.0, enter the endpoint and API key, then click **获取模型 / Fetch models**. Select a returned model, or enter the model ID manually if the service does not expose a compatible model list. Fetching uses `GET /models` under the same API prefix, including when a full `/chat/completions` endpoint is entered. It sends no paper text and makes no trial generation calls. Listed models are reported by the service; listing alone does not prove Chat Completions support or sufficient quota. Use **Test translation** to verify your selection.
+
+The target-language dropdown offers 16 presets plus **Custom**. Existing custom values are preserved. **界面语言 / Interface language** switches all open settings forms immediately without changing the target translation language. Model lists remain in memory and are invalidated when the endpoint or key changes.
 
 Example URL handling:
 
