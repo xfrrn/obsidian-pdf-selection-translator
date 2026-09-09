@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+- Improve section spacing, description line height and control alignment; stack controls in narrow settings panels.
+- Replace all settings dropdowns with consistent themed listboxes, including model and language selection.
+- Support keyboard navigation, type-ahead, selected markers, scrolling and viewport-aware popup placement.
+- Dismiss and clean up dropdowns when settings rerender or close.
+
 ## 0.2.0
 
 - Fetch model IDs from the configured service and select them from a dropdown, with manual entry retained.

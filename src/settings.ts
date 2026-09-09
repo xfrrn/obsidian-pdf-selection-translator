@@ -1,4 +1,5 @@
-import { Notice, Setting } from 'obsidian';
+import { Notice } from 'obsidian';
+import { PickerSetting as Setting, closePickerWithin } from './picker';
 import type PdfSelectionTranslatorPlugin from './main';
 import type { TriggerMode } from './core';
 import { TARGET_LANGUAGES } from './models';
@@ -27,10 +28,11 @@ export class SettingsForm {
     const { container, plugin } = this;
     const s = plugin.settings;
     const t = (zh: string, en: string) => this.t(zh, en);
+    closePickerWithin(container);
     container.empty();
     container.classList.add('pst-settings-container');
     new Setting(container).setName('界面语言 / Interface language')
-      .addDropdown(d => d.addOptions({ 'zh-CN': '简体中文', en: 'English' }).setValue(s.uiLanguage).onChange(async value => {
+      .addPicker(d => d.addOptions({ 'zh-CN': '简体中文', en: 'English' }).setValue(s.uiLanguage).onChange(async value => {
         s.uiLanguage = value === 'en' ? 'en' : 'zh-CN';
         plugin.refreshSettingsForms();
         await plugin.saveSettings();
@@ -58,10 +60,11 @@ export class SettingsForm {
     this.renderModels();
     const languageContainer = container.createDiv();
     const renderLanguage = () => {
+      closePickerWithin(languageContainer);
       languageContainer.empty();
       const known = TARGET_LANGUAGES.some(([value]) => value === s.targetLanguage);
       new Setting(languageContainer).setName(t('目标语言', 'Target language')).setDesc(t('与界面语言独立，可选择常用语言或自定义。', 'Independent of the interface language. Choose a preset or enter your own.'))
-        .addDropdown(d => {
+        .addPicker(d => {
           for (const [value, zh, en] of TARGET_LANGUAGES) d.addOption(value, t(zh, en));
           d.addOption('__custom__', t('自定义…', 'Custom…')).setValue(this.customLanguage || !known ? '__custom__' : s.targetLanguage);
           d.onChange(async value => {
@@ -76,7 +79,7 @@ export class SettingsForm {
     renderLanguage();
     new Setting(container).setName(t('阅读交互', 'Reading')).setHeading();
     new Setting(container).setName(t('触发方式', 'Translation trigger')).setDesc(t('自动、点击按钮或仅通过命令触发。', 'Translate automatically, on click, or only through a command.'))
-      .addDropdown(d => d.addOptions({ auto: t('选中后自动翻译', 'Automatic'), button: t('点击翻译按钮', 'Click to translate'), command: t('仅命令 / 快捷键', 'Command / hotkey only') })
+      .addPicker(d => d.addOptions({ auto: t('选中后自动翻译', 'Automatic'), button: t('点击翻译按钮', 'Click to translate'), command: t('仅命令 / 快捷键', 'Command / hotkey only') })
         .setValue(s.triggerMode).onChange(async value => { s.triggerMode = value as TriggerMode; await plugin.saveSettings(); }));
     new Setting(container).setName(t('选词等待时间', 'Selection delay')).setDesc(t('单位：毫秒。减少连续调整选区产生的调用。', 'Milliseconds. Reduces calls while adjusting a selection.'))
       .addSlider(slider => slider.setLimits(150, 2000, 50).setValue(s.delayMs).onChange(async value => { s.delayMs = value; await plugin.saveSettings(); }));
@@ -109,6 +112,7 @@ export class SettingsForm {
   private renderModels(): void {
     const s = this.plugin.settings;
     const t = (zh: string, en: string) => this.t(zh, en);
+    closePickerWithin(this.modelContainer);
     this.modelContainer.empty();
     let manual: { setValue(value: string): unknown };
     new Setting(this.modelContainer).setName(t('模型名称', 'Model name')).setDesc(t('获取列表后可直接选择；也可手动填写模型 ID。', 'Fetch the list to select a model, or enter a model ID manually.'))
@@ -133,7 +137,7 @@ export class SettingsForm {
       }));
     let selected: { setValue(value: string): unknown } | undefined;
     if (this.models.length) new Setting(this.modelContainer).setName(t('选择模型', 'Select model'))
-      .addDropdown(d => {
+      .addPicker(d => {
         selected = d; d.addOption('', t('请选择模型…', 'Choose a model…'));
         for (const id of this.models) d.addOption(id, id);
         d.setValue(this.models.includes(s.model) ? s.model : '').onChange(async value => {
@@ -168,6 +172,7 @@ export class SettingsForm {
     });
   }
   destroy(): void {
+    closePickerWithin(this.container);
     this.disposed = true; this.test?.abort(); this.discovery?.abort(); this.models = [];
     this.plugin.forms.delete(this);
   }

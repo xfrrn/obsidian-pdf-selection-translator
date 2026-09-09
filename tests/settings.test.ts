@@ -41,11 +41,17 @@ function fixture() {
   const root = doc.getElementById('settings')!;
   const form = new SettingsForm(root, host);
   const field = (label: string, target = root) => {
-    const el = target.querySelector<HTMLInputElement | HTMLSelectElement>(`[aria-label="${label}"]`);
+    const el = target.querySelector<HTMLInputElement | HTMLButtonElement>(`[aria-label="${label}"]`);
     assert.ok(el, `Missing field: ${label}`); return el;
   };
   const change = async (label: string, value: string, event = 'change') => {
-    const el = field(label); el.value = value; el.dispatchEvent(new dom.window.Event(event, { bubbles: true })); await tick();
+    const el = field(label);
+    if (el.getAttribute('role') === 'combobox') {
+      el.click();
+      const option = [...doc.querySelectorAll<HTMLElement>('[role="option"]')].find(row => row.dataset.value === value);
+      assert.ok(option, `Missing option: ${value}`); option.click();
+    } else { el.value = value; el.dispatchEvent(new dom.window.Event(event, { bubbles: true })); }
+    await tick();
   };
   const click = (label: string) => {
     const button = [...root.querySelectorAll('button')].find(el => el.textContent === label); assert.ok(button); button.click();
@@ -97,4 +103,35 @@ test('changing endpoint or key aborts discovery and never displays stale models;
       assert.ok(!f.root.textContent?.includes('closed-model'));
     } finally { f.close(); }
   }
+});
+
+test('custom pickers support keyboard selection, Escape cancellation, outside dismissal and form cleanup', async () => {
+  const f = fixture();
+  try {
+    assert.equal(f.root.querySelectorAll('select').length, 0);
+    const button = f.field('触发方式');
+    const key = (value: string) => button.dispatchEvent(new f.dom.window.KeyboardEvent('keydown', { key: value, bubbles: true, cancelable: true }));
+    key('ArrowDown'); assert.equal(button.getAttribute('aria-expanded'), 'true');
+    key('ArrowDown'); key('Escape'); assert.equal(f.settings.triggerMode, 'auto');
+    assert.equal(f.doc.querySelector('[role="listbox"]'), null);
+    key('Enter'); key('End'); key('Enter'); await tick();
+    assert.equal(f.settings.triggerMode, 'command'); assert.equal(f.doc.activeElement, button);
+    button.click(); f.doc.body.dispatchEvent(new f.dom.window.Event('pointerdown', { bubbles: true }));
+    assert.equal(button.getAttribute('aria-expanded'), 'false');
+    button.click(); f.form.destroy();
+    assert.equal(f.doc.querySelector('[role="listbox"]'), null);
+  } finally { f.close(); }
+});
+
+test('only one picker opens per document, and language rerender removes its portal', async () => {
+  const f = fixture();
+  try {
+    f.field('目标语言').click(); f.field('界面语言 / Interface language').click();
+    assert.equal(f.doc.querySelectorAll('[role="listbox"]').length, 1);
+    const option = [...f.doc.querySelectorAll<HTMLElement>('[role="option"]')].find(row => row.dataset.value === 'en')!;
+    option.click(); await tick();
+    assert.equal(f.doc.querySelector('[role="listbox"]'), null);
+    assert.equal(f.root.querySelector('select'), null);
+    assert.equal(f.field('Target language').value, '简体中文');
+  } finally { f.close(); }
 });
